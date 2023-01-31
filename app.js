@@ -1,12 +1,18 @@
 // jshint esversion: 6
 
+const dotenv = require("dotenv").config();
 const express = require("express");
 const bodyParser = require('body-parser');
 const request  = require('request');
 const https = require('https');
 
+
 const app = express();
 app.use(express.static("public"));
+
+var authKey = process.env.API_KEY;
+var listId = process.env.LIST_ID;
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -35,10 +41,10 @@ app.post("/", function(req, res){
     };
 
     var jsonData = JSON.stringify(data);
-    const url = "https://us21.api.mailchimp.com/3.0/lists/310bc9da47"
+    const url = "https://us21.api.mailchimp.com/3.0/lists/"+listId;
     const options = {
         method: "POST",
-        auth: "rohit1:2bae2ab77a632dfdeb66bacdde8ea96e-us21"
+        auth: authKey
     }
 
     const request = https.request(url, options, function(resp){
@@ -70,8 +76,3 @@ app.listen(process.env.PORT || 3000, function(){
 
 
 
-// API Key 
-// 2bae2ab77a632dfdeb66bacdde8ea96e-us21
-
-// List Id 
-// 310bc9da47
